@@ -224,36 +224,53 @@
   document.querySelector('.moon').addEventListener('click', openStory);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeStory(); });
 </script>
-<!-- Фоновая музыка на главной -->
-<audio id="mainMusic" loop preload="auto">
+<!-- Фоновая музыка -->
+<audio id="bgMusic" loop preload="auto">
   <source src="music/main.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Кнопка звука в углу -->
+<!-- Кнопка звука -->
 <button id="muteBtn" style="
-  position:fixed; bottom:20px; right:20px; z-index:10;
-  width:52px; height:52px; border-radius:50%;
-  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
-  color:#fff; font-size:22px; cursor:pointer;
-  backdrop-filter:blur(8px);
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(232,195,122,0.4);
+  color: #e8c37a;
+  font-size: 24px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
 ">🔊</button>
 
 <script>
-  const mainMusic = document.getElementById('mainMusic');
+  const bgMusic = document.getElementById('bgMusic');
   const muteBtn = document.getElementById('muteBtn');
-  let muted = false;
+  let isMuted = false;
 
-  // Запускаем музыку только после первого клика (иначе телефон заблокирует)
-  document.getElementById('startBtn').addEventListener('click', () => {
-    mainMusic.volume = 0.5;
-    mainMusic.play().catch(() => {});
+  // Запускаем музыку при клике на кнопку "Начать историю"
+  document.querySelector('.btn').addEventListener('click', () => {
+    bgMusic.volume = 0.4;
+    bgMusic.play().catch(e => console.log('Автоплей заблокирован'));
+  });
+
+  // Также запускаем при клике по луне
+  document.querySelector('.moon').addEventListener('click', () => {
+    bgMusic.volume = 0.4;
+    bgMusic.play().catch(e => console.log('Автоплей заблокирован'));
   });
 
   // Кнопка mute/unmute
   muteBtn.addEventListener('click', () => {
-    muted = !muted;
-    mainMusic.muted = muted;
-    muteBtn.textContent = muted ? '🔇' : '🔊';
+    isMuted = !isMuted;
+    bgMusic.muted = isMuted;
+    muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    muteBtn.style.background = isMuted ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)';
   });
 </script>
 </body>

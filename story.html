@@ -141,6 +141,47 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
+<!-- Фоновая музыка для истории -->
+<audio id="storyMusic" loop preload="auto">
+  <source src="music/main.mp3" type="audio/mpeg">
+</audio>
 
+<!-- Кнопка звука в истории -->
+<button id="storyMuteBtn" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(232,195,122,0.2);
+  border: 1px solid rgba(232,195,122,0.4);
+  color: #e8c37a;
+  font-size: 22px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+">🔊</button>
+
+<script>
+  const storyMusic = document.getElementById('storyMusic');
+  const storyMuteBtn = document.getElementById('storyMuteBtn');
+  let storyMuted = false;
+
+  // Запускаем музыку при первом клике на любую кнопку
+  document.addEventListener('click', function startMusic() {
+    storyMusic.volume = 0.3;
+    storyMusic.play().catch(e => console.log('Автоплей заблокирован'));
+    document.removeEventListener('click', startMusic);
+  }, { once: true });
+
+  // Кнопка mute/unmute
+  storyMuteBtn.addEventListener('click', () => {
+    storyMuted = !storyMuted;
+    storyMusic.muted = storyMuted;
+    storyMuteBtn.textContent = storyMuted ? '🔇' : '🔊';
+  });
+</script>
 </body>
 </html>
